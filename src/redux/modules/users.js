@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { setItem as localStorageSetItem } from '../../services/localStorage';
 import axios from 'axios';
 import { ROOT_URL } from '../../config/networkSettings';
 
@@ -75,8 +75,7 @@ export const createUser = params => async (dispatch) => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/createUser`, params);
     if (response !== 'user-exists') {
-      AsyncStorage.removeItem('user');
-      AsyncStorage.setItem('user', JSON.stringify(response.data));
+      localStorageSetItem('user', JSON.stringify(response.data));
     }
     dispatch({ type: SIGNUP_SUCCESS });
   } catch (err) {
@@ -89,8 +88,7 @@ export const loginUser = params => async (dispatch) => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/loginUser`, params);
     if (response.data) {
-      AsyncStorage.removeItem('user');
-      AsyncStorage.setItem('user', JSON.stringify(response.data));
+      localStorageSetItem('user', JSON.stringify(response.data));
       dispatch({ type: LOGIN_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: LOGIN_FAIL });
