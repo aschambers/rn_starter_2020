@@ -6,10 +6,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemL
 import { Home, Dashboard as DashboardScreen, Profile as ProfileScreen } from '../screens';
 import { Signup, Login } from '../components';
 import { getHeaderTitle } from '../utils/getHeaderTitle';
-
-// used to logout user using store
-import configureStore from '../redux/store';
-export const store = configureStore();
+import { logout } from '../utils/logout';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -21,8 +18,16 @@ const CustomDrawerContent = (props) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
+        label="Logout"
+        labelStyle={styles.label}
+        style={styles.logout}
+        icon={() => <Image source={require('../assets/images/logout.png')} style={styles.icon} />}
+        onPress={() => { logout(props); }}
+      />
+      <DrawerItem
         label="Version 1.0.0"
-        style={styles.drawerStyle}
+        labelStyle={styles.label}
+        style={styles.version}
       />
     </DrawerContentScrollView>
   );
@@ -36,12 +41,20 @@ DrawerNavigator = () => {
       <Drawer.Screen
         name="DashboardScreen"
         component={DashboardScreen}
-        options={{ title: 'Dashboard' }}
+        options={{
+          title: 'Dashboard',
+          drawerLabel: 'Dashboard',
+          drawerIcon: () => <Image source={require('../assets/images/home.png')} style={styles.icon} />
+        }}
       />
       <Drawer.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ title: 'Profile' }}
+        options={{
+          title: 'Profile',
+          drawerLabel: 'Profile',
+          drawerIcon: () =>  <Image source={require('../assets/images/user.png')} style={styles.icon} />
+        }}
       />
     </Drawer.Navigator>
   );
@@ -63,7 +76,7 @@ MainNavigator = () => {
               style={styles.menuWrapper}
               onPress={() => { navigation.dispatch(DrawerActions.toggleDrawer()); }}
             >
-              <Image source={require('../assets/images/menu.png')} style={styles.menuIcon} />
+              <Image source={require('../assets/images/menu.png')} style={styles.icon} />
             </TouchableOpacity>
           )
         })}
@@ -76,14 +89,22 @@ const styles = StyleSheet.create({
   menuWrapper: {
     marginLeft: 10
   },
-  menuIcon: {
+  icon: {
     width: 30,
     height: 30
   },
-  drawerStyle: {
+  label: {
+    fontSize: 16,
+  },
+  logout: {
     position: 'absolute',
     top: 0,
-    marginTop: SCREEN_HEIGHT * 0.8,
+    marginTop: SCREEN_HEIGHT * 0.78,
+  },
+  version: {
+    position: 'absolute',
+    top: 0,
+    marginTop: SCREEN_HEIGHT * 0.81,
   }
 });
 

@@ -10,11 +10,21 @@ export const getItem = async(item) => {
   }
 };
 
-export const setItem = async(item, value)=>{
+export const setItem = async(item, value) => {
   try {
     await AsyncStorage.setItem(item, JSON.stringify(value));
   } catch (error) {
-    console.log("SetItem error: ", error)
+    console.log("SetItem error: ", error);
     return null;
   }
 };
+
+export const removeItem = async(item) => {
+  try {
+    await AsyncStorage.removeItem(item);
+    return true;
+  } catch (error) {
+    console.log("RemoveItem error: ", error);
+    return false;
+  }
+}

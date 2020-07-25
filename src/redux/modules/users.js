@@ -73,9 +73,10 @@ export default (state = initialState, action) => {
 export const createUser = params => async (dispatch) => {
   dispatch({ type: SIGNUP_LOADING });
   try {
-    const response = await axios.post(`${ROOT_URL}/api/v1/createUser`, params);
+    const response = await axios.post(`${ROOT_URL}/api/v1/creaateUser`, params);
+    console.log('response: ' + response);
     if (response !== 'user-exists') {
-      localStorageSetItem('user', JSON.stringify(response.data));
+      localStorageSetItem('user', response.data);
     }
     dispatch({ type: SIGNUP_SUCCESS });
   } catch (err) {
@@ -88,7 +89,7 @@ export const loginUser = params => async (dispatch) => {
   try {
     const response = await axios.post(`${ROOT_URL}/api/v1/loginUser`, params);
     if (response.data) {
-      localStorageSetItem('user', JSON.stringify(response.data));
+      localStorageSetItem('user', response.data);
       dispatch({ type: LOGIN_SUCCESS, payload: response.data });
     } else {
       dispatch({ type: LOGIN_FAIL });
